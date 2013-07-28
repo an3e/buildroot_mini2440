@@ -1,0 +1,34 @@
+--- linux-3.0.4_unptchd/arch/arm/mach-s3c2410/include/mach/leds-gpio.h	2011-08-29 22:56:30.000000000 +0200
++++ linux-3.0.4_patched/arch/arm/mach-s3c2410/include/mach/leds-gpio.h	2013-03-08 16:34:06.320787165 +0100
+@@ -16,6 +16,7 @@
+ 
+ #define S3C24XX_LEDF_ACTLOW	(1<<0)		/* LED is on when GPIO low */
+ #define S3C24XX_LEDF_TRISTATE	(1<<1)		/* tristate to turn off */
++#define S3C24XX_LEDF_STARTON    (1<<2)          /* Initialise 'on' */ 
+ 
+ struct s3c24xx_led_platdata {
+ 	unsigned int		 gpio;
+--- linux-3.0.4_unptchd/arch/arm/mach-s3c2440/mach-mini2440.c	2013-03-08 16:52:06.532758062 +0100
++++ linux-3.0.4_patched/arch/arm/mach-s3c2440/mach-mini2440.c	2013-03-08 16:54:12.320754673 +0100
+@@ -427,6 +427,7 @@
+ static struct s3c24xx_led_platdata mini2440_led_backlight_pdata = {
+ 	.name		= "backlight",
+ 	.gpio		= S3C2410_GPG(4),
++	.flags		= S3C24XX_LEDF_STARTON,
+ 	.def_trigger	= "backlight",
+ };
+ 
+--- linux-3.0.4_unptchd/drivers/leds/leds-s3c24xx.c	2011-08-29 22:56:30.000000000 +0200
++++ linux-3.0.4_patched/drivers/leds/leds-s3c24xx.c	2013-03-08 16:42:18.712773899 +0100
+@@ -95,7 +95,10 @@
+ 		s3c2410_gpio_cfgpin(pdata->gpio, S3C2410_GPIO_INPUT);
+ 	} else {
+ 		s3c2410_gpio_pullup(pdata->gpio, 0);
+-		s3c2410_gpio_setpin(pdata->gpio, 0);
++		if (pdata->flags & S3C24XX_LEDF_STARTON)
++			s3c2410_gpio_setpin(pdata->gpio, 1); 
++		else 
++			s3c2410_gpio_setpin(pdata->gpio, 0); 
+ 		s3c2410_gpio_cfgpin(pdata->gpio, S3C2410_GPIO_OUTPUT);
+ 	}
+ 

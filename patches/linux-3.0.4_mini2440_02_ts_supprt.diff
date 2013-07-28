@@ -1,0 +1,56 @@
+--- linux-3.0.4_unptchd/arch/arm/mach-s3c2440/mach-mini2440.c	2013-03-08 16:16:19.340815912 +0100
++++ linux-3.0.4_patched/arch/arm/mach-s3c2440/mach-mini2440.c	2013-03-08 16:15:21.344817476 +0100
+@@ -47,6 +47,7 @@
+ #include <plat/iic.h>
+ #include <plat/mci.h>
+ #include <plat/udc.h>
++#include <plat/ts.h> 
+ 
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/nand.h>
+@@ -506,6 +507,11 @@
+ 		.id = -1,
+ };
+ 
++static struct s3c2410_ts_mach_info mini2440_ts_cfg __initdata = { 
++	.delay = 10000, 
++	.presc = 0xff, /* slow as we can go */ 
++}; 
++
+ static struct platform_device *mini2440_devices[] __initdata = {
+ 	&s3c_device_ohci,
+ 	&s3c_device_wdt,
+@@ -524,6 +530,7 @@
+ 	&uda1340_codec,
+ 	&mini2440_audio,
+ 	&samsung_asoc_dma,
++	&s3c_device_adc,
+ };
+ 
+ static void __init mini2440_map_io(void)
+@@ -607,9 +614,14 @@
+ 			features->done |= FEATURE_BACKLIGHT;
+ 			break;
+ 		case 't':
+-			printk(KERN_INFO "MINI2440: '%c' ignored, "
+-				"touchscreen not compiled in\n", f);
+-			break;
++			if (features->done & FEATURE_TOUCH) 
++				printk(KERN_INFO "MINI2440: '%c' ignored, " 
++					"touchscreen already set\n", f); 
++			else 
++				features->optional[features->count++] = 
++						&s3c_device_ts; 
++			features->done |= FEATURE_TOUCH; 
++ 			break; 
+ 		case 'c':
+ 			if (features->done & FEATURE_CAMERA)
+ 				printk(KERN_INFO "MINI2440: '%c' ignored, "
+@@ -675,6 +687,7 @@
+ 	s3c24xx_mci_set_platdata(&mini2440_mmc_cfg);
+ 	s3c_nand_set_platdata(&mini2440_nand_info);
+ 	s3c_i2c0_set_platdata(NULL);
++	s3c24xx_ts_set_platdata(&mini2440_ts_cfg);
+ 
+ 	i2c_register_board_info(0, mini2440_i2c_devs,
+ 				ARRAY_SIZE(mini2440_i2c_devs));
