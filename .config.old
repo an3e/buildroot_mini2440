@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Buildroot 2013.05-gf9df0ef-dirty Configuration
+# Buildroot 2013.05-g2ebf705 Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 # BR2_arcle is not set
@@ -379,7 +379,7 @@ BR2_PACKAGE_MADPLAY_ALSA=y
 #
 # BR2_PACKAGE_GNUPLOT is not set
 # BR2_PACKAGE_JHEAD is not set
-# BR2_PACKAGE_RRDTOOL is not set
+BR2_PACKAGE_RRDTOOL=y
 
 #
 # graphic libraries
@@ -700,12 +700,12 @@ BR2_PACKAGE_ZLIB=y
 # BR2_PACKAGE_ATK is not set
 # BR2_PACKAGE_CAIRO is not set
 # BR2_PACKAGE_FONTCONFIG is not set
-# BR2_PACKAGE_FREETYPE is not set
+BR2_PACKAGE_FREETYPE=y
 # BR2_PACKAGE_GD is not set
 # BR2_PACKAGE_IMLIB2 is not set
 # BR2_PACKAGE_JPEG is not set
 # BR2_PACKAGE_LCMS2 is not set
-# BR2_PACKAGE_LIBART is not set
+BR2_PACKAGE_LIBART=y
 # BR2_PACKAGE_LIBDMTX is not set
 # BR2_PACKAGE_LIBEXIF is not set
 # BR2_PACKAGE_LIBGEOTIFF is not set
@@ -714,7 +714,7 @@ BR2_PACKAGE_ZLIB=y
 #
 # libgtk2 requires a toolchain with WCHAR and C++ support
 #
-# BR2_PACKAGE_LIBPNG is not set
+BR2_PACKAGE_LIBPNG=y
 
 #
 # libraw requires a toolchain with C++ support enabled
